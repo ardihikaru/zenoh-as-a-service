@@ -29,6 +29,11 @@ class ServiceABC(ABC):
 		raise NotImplementedError("subclasses must override register_subscriber()!")
 
 	@abstractmethod
+	def register_publisher(self):
+		L.error("subclasses must override register_publisher()!")
+		raise NotImplementedError("subclasses must override register_publisher()!")
+
+	@abstractmethod
 	def publish_data(self, val):
 		L.error("subclasses must override publish_data()!")
 		raise NotImplementedError("subclasses must override publish_data()!")
