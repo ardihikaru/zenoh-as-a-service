@@ -41,6 +41,15 @@ class ZenohNet(ServiceABC):
 
 	class SessionType(Enum):
 		SUBSCRIBER = "SUBSCRIBER"
+		PUBLISHER = "PUBLISHER"
+
+	# set default encoder
+	ENCODER = [
+		('id', 'U10'),
+		('timestamp', 'f'),
+		('data', [('flatten', 'i')], (1, 6220800)),
+		('store_enabled', '?'),
+	]
 
 	def __init__(self, _listener=None, _mode="peer", _peer=None, _selector=None, _path=None, _session_type=None,
 	             type_numpy=False, tagged_data=False):
@@ -72,10 +81,10 @@ class ZenohNet(ServiceABC):
 		if self.listener is not None:
 			self.conf["listener"] = ",".join(args.listener)
 
-		self.workspace = None
 		self.z_session = None
 		self.z_sub_info = None
 		self.z_queryable = None
+		self.z_rid = None
 
 		self.pub = None
 		self.sub = None
@@ -83,6 +92,8 @@ class ZenohNet(ServiceABC):
 	def _get_session_type(self, _type):
 		if _type.upper() == self.SessionType.SUBSCRIBER.value:
 			return self.SessionType.SUBSCRIBER.value
+		elif _type.upper() == self.SessionType.PUBLISHER.value:
+			return self.SessionType.PUBLISHER.value
 		else:
 			return None
 
@@ -108,6 +119,11 @@ class ZenohNet(ServiceABC):
 			self.z_queryable = self.z_session.declare_queryable(
 				self.selector, STORAGE, query_handler)
 
-	def publish_data(self, val):
+	def register_publisher(self):
+		L.warning("[ZENOH] Registering new producer")
+		self.z_rid = self.z_session.declare_resource(self.path)
+		self.pub = self.z_session.declare_publisher(self.z_rid)
+
+	def publish_data(self, encoded_val):
 		L.warning("[ZENOH] Publish data")
-		self.workspace.put(self.path, val)
+		self.z_session.write(self.z_rid, encoded_val)
