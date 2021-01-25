@@ -24,9 +24,7 @@ class ZenohNativePut(ZenohNative):
 		# HERE
 
 		t0_publish = time.time()
-		L.warning("TIME ZERO: {}".format(t0_publish))
 		super().publish_data(val)
-		# super().publish_data(t0_publish)
 		t1_publish = (time.time() - t0_publish) * 1000
 		L.warning(('\n[%s] Latency insert data into Zenoh (%.3f ms) \n' % (datetime.now().strftime("%H:%M:%S"), t1_publish)))
 
