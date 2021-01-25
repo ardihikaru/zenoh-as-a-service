@@ -1,0 +1,4 @@
+eclipse-zenoh
+simplejson
+numpy
+opencv-python
