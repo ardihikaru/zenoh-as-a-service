@@ -96,6 +96,9 @@ class ZenohNative(ServiceABC):
 		L.warning("[ZENOH] Registering new consumer")
 		self.sub = self.workspace.subscribe(self.selector, listener)
 
+	def register_publisher(self):
+		pass  # nothing to do here
+
 	def publish_data(self, val):
 		L.warning("[ZENOH] Publish data")
 		self.workspace.put(self.path, val)

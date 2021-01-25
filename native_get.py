@@ -13,8 +13,7 @@ L = logging.getLogger(__name__)
 ###
 
 # configure input parameters
-# selector = "/demo/example/**"
-selector = "/demo/image/**"
+selector = "/demo/example/**"
 type_image = True
 tagged_image = True
 
@@ -28,4 +27,3 @@ z_svc.get()
 
 # closing Zenoh subscription & session
 z_svc.close_connection()
-# """
