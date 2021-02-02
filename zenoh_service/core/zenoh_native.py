@@ -58,9 +58,9 @@ class ZenohNative(ServiceABC):
 		# setup configuration
 		self.conf = {"mode": self.mode}
 		if self.peer is not None:
-			self.conf["peer"] = ",".join(args.peer)
+			self.conf["peer"] = self.peer
 		if self.listener is not None:
-			self.conf["listener"] = ",".join(args.listener)
+			self.conf["listener"] = self.listener
 
 		self.workspace = None
 		self.z_session = None

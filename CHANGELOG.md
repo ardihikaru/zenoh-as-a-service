@@ -1,3 +1,14 @@
+## 0.3.0 (February 03, 2021)
+  - Merge branch 'feature/readme-zenoh-installation' into develop
+  - - add more detailed todos - update installation steps
+  - Merge branch 'feature/zenoh-multi-hosts' into develop
+  - add value examples for Pub/Sub between two hosts
+  - add zenh default examples
+  - bugfix: wrong logic
+  - add examples of different scenarios
+  - bugfix: wrong value assignment
+  - Merge branch 'release/0.2' into develop
+
 ## 0.2.0 (一月 25, 2021)
   - Merge pull request #1 from ardihikaru/feature/zenoh
   - add enter

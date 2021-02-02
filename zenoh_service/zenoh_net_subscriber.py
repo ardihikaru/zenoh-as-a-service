@@ -2,6 +2,7 @@ from zenoh_service.core.zenoh_net import ZenohNet
 import sys
 import time
 from datetime import datetime
+import numpy as np
 import logging
 
 ###
@@ -13,8 +14,50 @@ L = logging.getLogger(__name__)
 
 
 def listener(consumed_data):
-	L.warning("Consumed Value: {}".format(consumed_data.payload))
-	# store[sample.res_name] = (change.payload, change.data_info)
+	# # ####################### For tuple data
+	# t0_decoding = time.time()
+	# encoder_format = [
+	# 	('id', 'U10'),
+	# 	('timestamp', 'f'),
+	# 	('data', [('flatten', 'i')], (1, 6220800)),
+	# 	('store_enabled', '?'),
+	# ]
+	# deserialized_bytes = np.frombuffer(consumed_data.payload, dtype=encoder_format)
+	#
+	# t1_decoding = (time.time() - t0_decoding) * 1000
+	# L.warning(
+	#     ('\n[%s] Latency deserialized_bytes (%.3f ms) \n' % (datetime.now().strftime("%H:%M:%S"), t1_decoding)))
+	#
+	# t0_decoding = time.time()
+	# img_ori = deserialized_bytes["data"]["flatten"][0].reshape(1080, 1920, 3)
+	# print(">>> img_ori SHAPE:", img_ori.shape)
+	#
+	# t1_decoding = (time.time() - t0_decoding) * 1000
+	# L.warning(
+	#     ('\n[%s] Latency reformat image (%.3f ms) \n' % (datetime.now().strftime("%H:%M:%S"), t1_decoding)))
+	# # ######################## END for tuple data
+	# # ########################
+
+	############
+	############ For IMAGE ONLY
+	t0_decoding = time.time()
+	deserialized_bytes = np.frombuffer(consumed_data.payload, dtype=np.int8)
+	t1_decoding = (time.time() - t0_decoding) * 1000
+	L.warning(
+	    ('\n[%s] Latency load ONLY numpy image (%.3f ms) \n' % (datetime.now().strftime("%H:%M:%S"), t1_decoding)))
+
+
+	t0_decoding = time.time()
+	deserialized_img = np.reshape(deserialized_bytes, newshape=(1080, 1920, 3))
+	print(">>> img_ori SHAPE:", deserialized_img.shape)
+	t1_decoding = (time.time() - t0_decoding) * 1000
+	L.warning(
+	    ('\n[%s] Latency reformat image (%.3f ms) \n' % (datetime.now().strftime("%H:%M:%S"), t1_decoding)))
+	############ END For IMAGE ONLY
+	############
+
+	# L.warning("Consumed Value: {}".format(consumed_data.payload))
+	# store[consumed_data.res_name] = (consumed_data.payload, consumed_data.data_info)
 
 
 def query_handler(query):
