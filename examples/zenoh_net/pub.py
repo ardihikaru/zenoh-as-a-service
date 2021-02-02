@@ -16,6 +16,8 @@ import argparse
 import itertools
 import zenoh
 from zenoh.net import config
+import cv2
+import numpy as np
 
 # --- Command line argument parsing --- --- --- --- --- ---
 parser = argparse.ArgumentParser(
@@ -52,7 +54,28 @@ if args.peer is not None:
 if args.listener is not None:
     conf["listener"] = ",".join(args.listener)
 path = args.path
-value = args.value
+
+# Scenario 1: simple value (string)
+# value = args.value
+
+# Scenario 2: image data
+root_path = "/home/s010132/devel/eagleeye/data/out1.png"
+img_data = cv2.imread(root_path)
+value = img_data.tobytes()
+
+# Scenario 3: Custom Data
+# root_path = "/home/s010132/devel/eagleeye/data/out1.png"
+# img_data = cv2.imread(root_path)
+# img_1d = img_data.reshape(1, -1)
+# encoder = [
+# 	('id', 'U10'),
+# 	('timestamp', 'f'),
+# 	('data', [('flatten', 'i')], (1, 6220800)),
+# 	('store_enabled', '?'),
+# ]
+# val = [('Drone 1', time.time(), img_1d, False)]
+# tagged_data = np.array(val, dtype=encoder)
+# value = tagged_data.tobytes()
 
 # zenoh-net code  --- --- --- --- --- --- --- --- --- --- ---
 
@@ -71,9 +94,11 @@ publisher = session.declare_publisher(rid)
 
 for idx in itertools.count():
     time.sleep(1)
-    buf = "[{:4d}] {}".format(idx, value)
-    print("Writing Data ('{}': '{}')...".format(rid, buf))
-    session.write(rid, bytes(buf, encoding='utf8'))
+    # buf = "[{:4d}] {}".format(idx, value)
+    print("Writing Data ('{}': IMAGE Data)...".format(rid))
+    # print("Writing Data ('{}': '{}')...".format(rid, buf))
+    # session.write(rid, bytes(buf, encoding='utf8'))
+    session.write(rid, value)
 
 publisher.undeclare()
 session.close()
