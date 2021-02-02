@@ -77,9 +77,9 @@ class ZenohNet(ServiceABC):
 		# setup configuration
 		self.conf = {"mode": self.mode}
 		if self.peer is not None:
-			self.conf["peer"] = ",".join(args.peer)
+			self.conf["peer"] = ",".join(self.peer)
 		if self.listener is not None:
-			self.conf["listener"] = ",".join(args.listener)
+			self.conf["listener"] = ",".join(self.listener)
 
 		self.z_session = None
 		self.z_sub_info = None
