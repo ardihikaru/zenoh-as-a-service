@@ -57,7 +57,8 @@ val = cv2.imread(root_path)
 	- Asumming that both hosts are in the multicast network environment
 """
 selector = "/demo/**"
-peer = "tcp/192.168.1.110:7447"
+# peer = "tcp/172.18.8.188:7447"
+peer = "tcp/localhost:7447"
 
 # configure zenoh service
 path = "/demo/example/zenoh-python-pub"
