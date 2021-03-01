@@ -219,9 +219,11 @@ val = [('Drone 1', time.time(), img_1d, False)]
 ###############################################################
 
 # configure zenoh service
+ip_addr = "localhost"
+peer = "tcp/{}:7447".format(ip_addr)
 path = "/demo/example/zenoh-python-pub"
 z_svc = ZenohNetPublisher(
-	_path=path, _session_type="PUBLISHER"
+	_path=path, _session_type="PUBLISHER", _peer=peer
 )
 z_svc.init_connection()
 
