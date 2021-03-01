@@ -232,11 +232,20 @@ z_svc.register()
 publisher = z_svc.get_publisher()
 
 # publish data
-z_svc.publish(
-	_val=val,
-	_itype=itype,
-	_encoder=encoder_format,
-)
+# z_svc.publish(
+# 	_val=val,
+# 	_itype=itype,
+# 	_encoder=encoder_format,
+# )
+while True:
+	# publish data
+	z_svc.publish(
+		_val=val,
+		_itype=itype,
+		_encoder=encoder_format,
+	)
+
+	time.sleep(0.33)
 
 # closing Zenoh publisher & session
 z_svc.close_connection(publisher)
