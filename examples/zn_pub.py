@@ -10,6 +10,11 @@
 # Contributors:
 #   ADLINK zenoh team, <zenoh@adlink-labs.tech>
 
+# Examples
+# HOST1 $ zn_sub -l tcp/<IP HOST1>:7447
+# HOST2 $ zn_pub -e tcp/<IP HOST1>:7447
+
+
 import sys
 import time
 import argparse
